@@ -1,0 +1,28 @@
+/* Status */
+"status.locked" = "Locked";
+"status.unlocked" = "Unlocked";
+
+/* Buttons */
+"button.lock" = "Lock";
+"button.unlock" = "Unlock";
+"button.quit" = "Quit";
+
+/* Menu */
+"menu.lockCurrent" = "Lock Current Input";
+"menu.unlock" = "Unlock Input";
+"menu.quit" = "Quit";
+
+/* Settings */
+"settings.launchAtLogin" = "Launch at Login";
+"settings.language" = "Language";
+
+/* Languages */
+"language.system" = "System Default";
+"language.en" = "English";
+"language.zh-Hans" = "简体中文";
+"language.fr" = "Français";
+"language.de" = "Deutsch";
+"language.ja" = "日本語";
+
+/* Accessibility */
+"accessibility.lockIcon" = "Input Lock Status";

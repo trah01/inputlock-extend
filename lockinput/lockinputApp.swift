@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ServiceManagement
+import Combine
 
 @main
 struct lockinputApp: App {
@@ -23,12 +24,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
     var popover: NSPopover!
     var inputManager = InputMethodManager.shared
+    var languageManager = LanguageManager.shared
+    private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusBar()
         setupPopover()
 
-        // 隐藏 Dock 图标
         NSApp.setActivationPolicy(.accessory)
     }
 
@@ -41,24 +43,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
-        // 监听锁定状态变化
         inputManager.$isLocked.receive(on: RunLoop.main).sink { [weak self] _ in
             self?.updateStatusBarIcon()
         }.store(in: &cancellables)
     }
 
-    private var cancellables = Set<AnyCancellable>()
-
     func updateStatusBarIcon() {
         if let button = statusItem.button {
             let symbolName = inputManager.isLocked ? "lock.fill" : "lock.open"
-            button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "输入法锁定")
+            let accessibilityDesc = "accessibility.lockIcon".localized(with: languageManager)
+            button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: accessibilityDesc)
         }
     }
 
     func setupPopover() {
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 280, height: 320)
+        popover.contentSize = NSSize(width: 280, height: 360)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: ContentView())
     }
@@ -84,8 +84,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showContextMenu() {
         let menu = NSMenu()
 
+        let lockTitle = inputManager.isLocked
+            ? "menu.unlock".localized(with: languageManager)
+            : "menu.lockCurrent".localized(with: languageManager)
         let lockItem = NSMenuItem(
-            title: inputManager.isLocked ? "解锁输入法" : "锁定当前输入法",
+            title: lockTitle,
             action: #selector(toggleLock),
             keyEquivalent: ""
         )
@@ -93,7 +96,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        let quitItem = NSMenuItem(title: "退出", action: #selector(quit), keyEquivalent: "q")
+        let quitTitle = "menu.quit".localized(with: languageManager)
+        let quitItem = NSMenuItem(title: quitTitle, action: #selector(quit), keyEquivalent: "q")
         menu.addItem(quitItem)
 
         statusItem.menu = menu
@@ -109,5 +113,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.terminate(nil)
     }
 }
-
-import Combine

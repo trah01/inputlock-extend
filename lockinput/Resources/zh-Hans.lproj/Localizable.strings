@@ -1,0 +1,28 @@
+/* Status */
+"status.locked" = "已锁定";
+"status.unlocked" = "未锁定";
+
+/* Buttons */
+"button.lock" = "锁定";
+"button.unlock" = "解锁";
+"button.quit" = "退出";
+
+/* Menu */
+"menu.lockCurrent" = "锁定当前输入法";
+"menu.unlock" = "解锁输入法";
+"menu.quit" = "退出";
+
+/* Settings */
+"settings.launchAtLogin" = "开机启动";
+"settings.language" = "语言";
+
+/* Languages */
+"language.system" = "跟随系统";
+"language.en" = "English";
+"language.zh-Hans" = "简体中文";
+"language.fr" = "Français";
+"language.de" = "Deutsch";
+"language.ja" = "日本語";
+
+/* Accessibility */
+"accessibility.lockIcon" = "输入法锁定状态";

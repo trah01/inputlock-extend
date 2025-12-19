@@ -1,0 +1,28 @@
+/* Status */
+"status.locked" = "Verrouillé";
+"status.unlocked" = "Déverrouillé";
+
+/* Buttons */
+"button.lock" = "Verrouiller";
+"button.unlock" = "Déverrouiller";
+"button.quit" = "Quitter";
+
+/* Menu */
+"menu.lockCurrent" = "Verrouiller la saisie actuelle";
+"menu.unlock" = "Déverrouiller la saisie";
+"menu.quit" = "Quitter";
+
+/* Settings */
+"settings.launchAtLogin" = "Lancer au démarrage";
+"settings.language" = "Langue";
+
+/* Languages */
+"language.system" = "Par défaut du système";
+"language.en" = "English";
+"language.zh-Hans" = "简体中文";
+"language.fr" = "Français";
+"language.de" = "Deutsch";
+"language.ja" = "日本語";
+
+/* Accessibility */
+"accessibility.lockIcon" = "État du verrouillage de saisie";

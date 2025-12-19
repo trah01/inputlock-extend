@@ -1,0 +1,28 @@
+/* Status */
+"status.locked" = "ロック中";
+"status.unlocked" = "ロック解除";
+
+/* Buttons */
+"button.lock" = "ロック";
+"button.unlock" = "解除";
+"button.quit" = "終了";
+
+/* Menu */
+"menu.lockCurrent" = "現在の入力をロック";
+"menu.unlock" = "入力のロックを解除";
+"menu.quit" = "終了";
+
+/* Settings */
+"settings.launchAtLogin" = "ログイン時に起動";
+"settings.language" = "言語";
+
+/* Languages */
+"language.system" = "システムのデフォルト";
+"language.en" = "English";
+"language.zh-Hans" = "简体中文";
+"language.fr" = "Français";
+"language.de" = "Deutsch";
+"language.ja" = "日本語";
+
+/* Accessibility */
+"accessibility.lockIcon" = "入力ロック状態";

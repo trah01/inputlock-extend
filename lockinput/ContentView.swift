@@ -11,21 +11,19 @@ import ServiceManagement
 
 struct ContentView: View {
     @ObservedObject var inputManager = InputMethodManager.shared
+    @ObservedObject var languageManager = LanguageManager.shared
     @AppStorage("launchAtLogin") var launchAtLogin = false
 
     var body: some View {
         VStack(spacing: 0) {
-            // 头部状态
             headerView
 
             Divider()
 
-            // 输入法列表
             inputSourceList
 
             Divider()
 
-            // 底部设置
             footerView
         }
         .frame(width: 280)
@@ -39,7 +37,9 @@ struct ContentView: View {
                     .foregroundColor(inputManager.isLocked ? .green : .secondary)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(inputManager.isLocked ? "已锁定" : "未锁定")
+                    Text(inputManager.isLocked
+                         ? "status.locked".localized(with: languageManager)
+                         : "status.unlocked".localized(with: languageManager))
                         .font(.headline)
 
                     Text(inputManager.currentInputSourceName)
@@ -52,8 +52,10 @@ struct ContentView: View {
                 Button(action: {
                     inputManager.toggle()
                 }) {
-                    Text(inputManager.isLocked ? "解锁" : "锁定")
-                        .frame(width: 50)
+                    Text(inputManager.isLocked
+                         ? "button.unlock".localized(with: languageManager)
+                         : "button.lock".localized(with: languageManager))
+                        .frame(width: 60)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(inputManager.isLocked ? .orange : .blue)
@@ -81,26 +83,45 @@ struct ContentView: View {
     }
 
     var footerView: some View {
-        HStack {
-            Toggle(isOn: $launchAtLogin) {
-                Label("开机启动", systemImage: "power")
+        VStack(spacing: 8) {
+            HStack {
+                Text("settings.language".localized(with: languageManager))
                     .font(.caption)
-            }
-            .toggleStyle(.checkbox)
-            .onChange(of: launchAtLogin) { _, newValue in
-                setLaunchAtLogin(newValue)
+                    .foregroundColor(.secondary)
+
+                Spacer()
+
+                Picker("", selection: $languageManager.currentLanguage) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayName).tag(language)
+                    }
+                }
+                .pickerStyle(.menu)
+                .frame(width: 120)
+                .scaleEffect(0.85)
             }
 
-            Spacer()
+            HStack {
+                Toggle(isOn: $launchAtLogin) {
+                    Label("settings.launchAtLogin".localized(with: languageManager), systemImage: "power")
+                        .font(.caption)
+                }
+                .toggleStyle(.checkbox)
+                .onChange(of: launchAtLogin) { _, newValue in
+                    setLaunchAtLogin(newValue)
+                }
 
-            Button(action: {
-                NSApp.terminate(nil)
-            }) {
-                Label("退出", systemImage: "xmark.circle")
-                    .font(.caption)
+                Spacer()
+
+                Button(action: {
+                    NSApp.terminate(nil)
+                }) {
+                    Label("button.quit".localized(with: languageManager), systemImage: "xmark.circle")
+                        .font(.caption)
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.secondary)
             }
-            .buttonStyle(.plain)
-            .foregroundColor(.secondary)
         }
         .padding()
     }

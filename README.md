@@ -20,7 +20,8 @@ A lightweight macOS menu bar app to lock your input method and prevent accidenta
 
 ## Requirements
 
-- macOS 26.0 or later
+- macOS 12.0 (Monterey) or later
+- Launch at Login feature requires macOS 13.0+
 
 ## Installation
 

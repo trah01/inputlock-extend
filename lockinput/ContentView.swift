@@ -107,7 +107,7 @@ struct ContentView: View {
                         .font(.caption)
                 }
                 .toggleStyle(.checkbox)
-                .onChange(of: launchAtLogin) { _, newValue in
+                .onChange(of: launchAtLogin) { newValue in
                     setLaunchAtLogin(newValue)
                 }
 
@@ -137,14 +137,16 @@ struct ContentView: View {
     }
 
     func setLaunchAtLogin(_ enabled: Bool) {
-        do {
-            if enabled {
-                try SMAppService.mainApp.register()
-            } else {
-                try SMAppService.mainApp.unregister()
+        if #available(macOS 13.0, *) {
+            do {
+                if enabled {
+                    try SMAppService.mainApp.register()
+                } else {
+                    try SMAppService.mainApp.unregister()
+                }
+            } catch {
+                print("Failed to set launch at login: \(error)")
             }
-        } catch {
-            print("Failed to set launch at login: \(error)")
         }
     }
 }

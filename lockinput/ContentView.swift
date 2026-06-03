@@ -132,8 +132,7 @@ struct ContentView: View {
     }
 
     func isLockedSource(_ source: TISInputSource) -> Bool {
-        guard let locked = inputManager.lockedInputSource else { return false }
-        return inputManager.getInputSourceID(source) == inputManager.getInputSourceID(locked)
+        inputManager.getInputSourceID(source) == inputManager.lockedInputSourceID
     }
 
     func setLaunchAtLogin(_ enabled: Bool) {
@@ -186,6 +185,8 @@ struct InputSourceRow: View {
     }
 }
 
+#if DEBUG && canImport(PreviewsMacros)
 #Preview {
     ContentView()
 }
+#endif

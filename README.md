@@ -1,120 +1,112 @@
 # LockInput
 
-A lightweight macOS menu bar app to lock your input method and prevent accidental switching.
+默认语言：简体中文
 
-一个轻量级的 macOS 状态栏应用，用于锁定输入法，防止意外切换。
+其他语言： [English](README.en.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | [日本語](README.ja.md)
 
-## Features
+LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法，减少在写作、编程或跨应用切换时误触切换输入法的问题。
 
-- **Lock Input Method** - Lock to your preferred input method, prevent accidental switching
-- **Menu Bar App** - Lives in the menu bar, no dock icon
-- **Multi-language Support** - English, 简体中文, Français, Deutsch, 日本語
-- **Launch at Login** - Optional auto-start when you log in
-- **Simple & Clean UI** - Minimal and intuitive interface
+## 功能
 
-## Screenshots
+- 锁定当前输入法，并在输入法被系统或应用切走后自动切回
+- 在菜单栏运行，不显示 Dock 图标
+- 左键打开输入法列表，右键打开快速菜单
+- 支持 English、简体中文、Français、Deutsch、日本語
+- 支持开机启动设置（需要 macOS 13.0 或更高版本）
 
-| Unlocked | Locked |
-|----------|--------|
-| 🔓 | 🔒 |
+## 系统要求
 
-## Requirements
+- macOS 12.0 Monterey 或更高版本
+- 开机启动功能需要 macOS 13.0 或更高版本
 
-- macOS 12.0 (Monterey) or later
-- Launch at Login feature requires macOS 13.0+
+## 安装
 
-## Installation
+推荐从 GitHub Release 安装：
 
-### Option 1: Build from Source
+1. 打开 [Releases](https://github.com/bigccc/inputlock/releases) 页面。
+2. 下载最新的 `LockInput-1.0.dmg`。
+3. 打开 DMG，把 `lockinput.app` 拖到 `Applications` 文件夹。
+4. 从 `Applications` 启动 LockInput。
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/yourusername/lockinput.git
-   cd lockinput
-   ```
+当前发布包未经过 Apple 公证。如果 macOS 首次启动时提示无法打开，请在“系统设置 > 隐私与安全性”中允许打开，或按住 Control 点击应用后选择“打开”。
 
-2. Open in Xcode
-   ```bash
-   open lockinput.xcodeproj
-   ```
+## 使用
 
-3. Build and run (`Cmd + R`)
+- 左键点击菜单栏锁图标：打开主面板
+- 右键点击菜单栏锁图标：打开快速操作菜单
+- 点击列表中的输入法：切换到该输入法并锁定
+- 点击“锁定 / 解锁”：锁定当前输入法或解除锁定
+- 在底部语言菜单中切换界面语言
+- 打开“开机启动”后，应用会在登录时自动启动（macOS 13.0+）
 
-### Option 2: Download Release
-
-Download the latest release from [Releases](https://github.com/yourusername/lockinput/releases) page.
-
-## Usage
-
-### Basic Operations
-
-- **Left-click** menu bar icon - Open the main panel
-- **Right-click** menu bar icon - Quick actions menu
-- **Click an input method** in the list - Switch and lock to that input method
-- **Lock/Unlock button** - Toggle lock status
-
-### Settings
-
-- **Language** - Choose interface language or follow system
-- **Launch at Login** - Enable/disable auto-start
-
-## Building
+## 从源码运行
 
 ```bash
-# Switch to Xcode (if needed)
-sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+git clone https://github.com/bigccc/inputlock.git
+cd inputlock
+open lockinput.xcodeproj
+```
 
-# Build Release version
+在 Xcode 中选择 `lockinput` scheme 后运行。
+
+## 构建发布包
+
+如果 `xcodebuild` 当前指向 Command Line Tools，需要切换到完整 Xcode：
+
+```bash
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+```
+
+构建 Release app：
+
+```bash
 xcodebuild -project lockinput.xcodeproj \
            -scheme lockinput \
            -configuration Release \
            -derivedDataPath build \
            clean build
-
-# Find the app at: build/Build/Products/Release/lockinput.app
 ```
 
-## Project Structure
+生成 DMG：
 
+```bash
+./scripts/create-dmg.sh
 ```
+
+生成的文件为：
+
+```text
+LockInput-1.0.dmg
+```
+
+## 项目结构
+
+```text
 lockinput/
-├── lockinputApp.swift        # App entry point & menu bar setup
-├── ContentView.swift         # Main UI
-├── InputMethodManager.swift  # Input method control logic
-├── LanguageManager.swift     # Localization manager
-├── Info.plist               # App configuration
-├── Assets.xcassets/         # App icons and assets
+├── lockinputApp.swift        # 应用入口与菜单栏
+├── ContentView.swift         # 主面板 UI
+├── InputMethodManager.swift  # 输入法读取、切换和锁定逻辑
+├── InputSourceLockState.swift # 锁定状态模型
+├── LanguageManager.swift     # 运行时语言切换
+├── Info.plist                # 应用元数据
+├── Assets.xcassets/          # 图标和资源
 └── Resources/
-    ├── en.lproj/            # English
-    ├── zh-Hans.lproj/       # Simplified Chinese
-    ├── fr.lproj/            # French
-    ├── de.lproj/            # German
-    └── ja.lproj/            # Japanese
+    ├── en.lproj/             # English
+    ├── zh-Hans.lproj/        # 简体中文
+    ├── fr.lproj/             # Français
+    ├── de.lproj/             # Deutsch
+    └── ja.lproj/             # 日本語
 ```
 
-## Localization
+## 本地化
 
-The app supports the following languages:
+新增语言时：
 
-| Language | Code |
-|----------|------|
-| English | en |
-| 简体中文 | zh-Hans |
-| Français | fr |
-| Deutsch | de |
-| 日本語 | ja |
+1. 在 `lockinput/Resources/` 下创建新的 `.lproj` 目录。
+2. 复制现有 `Localizable.strings` 并翻译。
+3. 在 `lockinput.xcodeproj/project.pbxproj` 的 `knownRegions` 中加入语言代码。
+4. 在 `LanguageManager.swift` 的 `AppLanguage` 中加入对应枚举值。
 
-To add a new language:
-1. Create a new `.lproj` folder in `Resources/`
-2. Copy `Localizable.strings` from `en.lproj`
-3. Translate the strings
-4. Add the language code to `knownRegions` in `project.pbxproj`
-5. Add the language to `AppLanguage` enum in `LanguageManager.swift`
+## 许可证
 
-## License
-
-MIT License
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+当前仓库尚未包含单独的 `LICENSE` 文件。

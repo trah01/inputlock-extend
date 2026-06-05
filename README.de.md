@@ -9,6 +9,7 @@ LockInput ist eine schlanke macOS-Menüleisten-App. Sie sperrt die aktuelle Eing
 ## Funktionen
 
 - Sperrt die aktuelle Eingabemethode und stellt sie wieder her, wenn eine andere Quelle aktiv wird
+- Erlaubt Caps Lock als temporären Wechsel zu einem ABC/ASCII-Layout, wenn eine chinesische Eingabemethode gesperrt ist
 - Läuft in der Menüleiste, ohne Dock-Symbol
 - Linksklick öffnet die Eingabequellenliste; Rechtsklick öffnet Schnellaktionen
 - Unterstützt English, 简体中文, Français, Deutsch und 日本語
@@ -36,6 +37,7 @@ Die aktuelle Veröffentlichung ist nicht von Apple notarisiert. Wenn macOS den e
 - Rechtsklick auf das Schloss-Symbol: Schnellaktionsmenü öffnen
 - Klick auf eine Eingabemethode: zu dieser Methode wechseln und sie sperren
 - Schaltfläche Sperren / Entsperren: aktuelle Quelle sperren oder Sperre aufheben
+- Wenn eine chinesische Eingabemethode gesperrt ist, kann Caps Lock temporär zu einem ABC/ASCII-Layout wechseln; beim Wechsel zurück zur gesperrten Quelle bleibt die Sperre aktiv
 - Sprachmenü unten: Sprache der Oberfläche wechseln
 - Start bei der Anmeldung aktivieren: App unter macOS 13.0+ automatisch nach der Anmeldung starten
 

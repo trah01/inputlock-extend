@@ -14,6 +14,7 @@
 
 /* Settings */
 "settings.launchAtLogin" = "ログイン時に起動";
+"settings.restorePreviousLockState" = "前回のロックを復元";
 "settings.language" = "言語";
 
 /* Languages */

@@ -11,6 +11,10 @@ import Combine
 
 class InputMethodManager: ObservableObject {
     static let shared = InputMethodManager()
+    private enum DefaultsKey {
+        static let restorePreviousLockState = "restorePreviousLockState"
+        static let previousLockedInputSourceID = "previousLockedInputSourceID"
+    }
 
     @Published var isLocked = false
     @Published var lockedInputSource: TISInputSource?
@@ -27,6 +31,7 @@ class InputMethodManager: ObservableObject {
         loadAvailableInputSources()
         updateCurrentInputSourceName()
         setupInputSourceChangeObservers()
+        restorePreviousLockStateIfNeeded()
     }
 
     deinit {
@@ -123,6 +128,7 @@ class InputMethodManager: ObservableObject {
 
     func unlock() {
         lockState.unlock()
+        UserDefaults.standard.removeObject(forKey: DefaultsKey.previousLockedInputSourceID)
         syncPublishedLockState()
         stopEnforcementTimer()
     }
@@ -182,8 +188,22 @@ class InputMethodManager: ObservableObject {
         guard !sourceID.isEmpty else { return }
 
         lockState.lock(inputSourceID: sourceID)
+        UserDefaults.standard.set(sourceID, forKey: DefaultsKey.previousLockedInputSourceID)
         syncPublishedLockState()
         startEnforcementTimer()
+    }
+
+    private func restorePreviousLockStateIfNeeded() {
+        guard UserDefaults.standard.bool(forKey: DefaultsKey.restorePreviousLockState),
+              let sourceID = UserDefaults.standard.string(forKey: DefaultsKey.previousLockedInputSourceID),
+              !sourceID.isEmpty else {
+            return
+        }
+
+        lockState.lock(inputSourceID: sourceID)
+        syncPublishedLockState()
+        startEnforcementTimer()
+        enforceLockedInputSource()
     }
 
     private func syncPublishedLockState() {

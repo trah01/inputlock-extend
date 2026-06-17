@@ -14,6 +14,7 @@
 
 /* Settings */
 "settings.launchAtLogin" = "Beim Anmelden starten";
+"settings.restorePreviousLockState" = "Vorherige Sperre wiederherstellen";
 "settings.language" = "Sprache";
 
 /* Languages */

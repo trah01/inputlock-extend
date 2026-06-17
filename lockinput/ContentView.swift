@@ -13,6 +13,7 @@ struct ContentView: View {
     @ObservedObject var inputManager = InputMethodManager.shared
     @ObservedObject var languageManager = LanguageManager.shared
     @AppStorage("launchAtLogin") var launchAtLogin = false
+    @AppStorage("restorePreviousLockState") var restorePreviousLockState = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -121,6 +122,16 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
+            }
+
+            HStack {
+                Toggle(isOn: $restorePreviousLockState) {
+                    Label("settings.restorePreviousLockState".localized(with: languageManager), systemImage: "arrow.clockwise")
+                        .font(.caption)
+                }
+                .toggleStyle(.checkbox)
+
+                Spacer()
             }
         }
         .padding()

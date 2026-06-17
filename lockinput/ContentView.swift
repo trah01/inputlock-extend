@@ -9,6 +9,13 @@ import SwiftUI
 import Carbon
 import ServiceManagement
 
+private enum AppTypography {
+    static let status = Font.system(size: 14, weight: .semibold)
+    static let primary = Font.system(size: 13)
+    static let secondary = Font.system(size: 12)
+    static let control = Font.system(size: 12)
+}
+
 struct ContentView: View {
     @ObservedObject var inputManager = InputMethodManager.shared
     @ObservedObject var languageManager = LanguageManager.shared
@@ -41,11 +48,14 @@ struct ContentView: View {
                     Text(inputManager.isLocked
                          ? "status.locked".localized(with: languageManager)
                          : "status.unlocked".localized(with: languageManager))
-                        .font(.headline)
+                        .font(AppTypography.status)
+                        .lineLimit(1)
 
                     Text(inputManager.currentInputSourceName)
-                        .font(.caption)
+                        .font(AppTypography.secondary)
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
                 }
 
                 Spacer()
@@ -56,7 +66,9 @@ struct ContentView: View {
                     Text(inputManager.isLocked
                          ? "button.unlock".localized(with: languageManager)
                          : "button.lock".localized(with: languageManager))
-                        .frame(width: 60)
+                        .font(AppTypography.control)
+                        .lineLimit(1)
+                        .frame(width: 64)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(inputManager.isLocked ? .orange : .blue)
@@ -87,8 +99,9 @@ struct ContentView: View {
         VStack(spacing: 8) {
             HStack {
                 Text("settings.language".localized(with: languageManager))
-                    .font(.caption)
+                    .font(AppTypography.control)
                     .foregroundColor(.secondary)
+                    .lineLimit(1)
 
                 Spacer()
 
@@ -99,13 +112,15 @@ struct ContentView: View {
                 }
                 .pickerStyle(.menu)
                 .frame(width: 120)
-                .scaleEffect(0.85)
+                .font(AppTypography.control)
             }
 
             HStack {
                 Toggle(isOn: $launchAtLogin) {
                     Label("settings.launchAtLogin".localized(with: languageManager), systemImage: "power")
-                        .font(.caption)
+                        .font(AppTypography.control)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
                 }
                 .toggleStyle(.checkbox)
                 .onChange(of: launchAtLogin) { newValue in
@@ -118,7 +133,8 @@ struct ContentView: View {
                     NSApp.terminate(nil)
                 }) {
                     Label("button.quit".localized(with: languageManager), systemImage: "xmark.circle")
-                        .font(.caption)
+                        .font(AppTypography.control)
+                        .lineLimit(1)
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
@@ -127,7 +143,9 @@ struct ContentView: View {
             HStack {
                 Toggle(isOn: $restorePreviousLockState) {
                     Label("settings.restorePreviousLockState".localized(with: languageManager), systemImage: "arrow.clockwise")
-                        .font(.caption)
+                        .font(AppTypography.control)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
                 }
                 .toggleStyle(.checkbox)
 
@@ -177,7 +195,10 @@ struct InputSourceRow: View {
                     .frame(width: 20)
 
                 Text(inputManager.getInputSourceName(source))
+                    .font(AppTypography.primary)
                     .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
 
                 Spacer()
 

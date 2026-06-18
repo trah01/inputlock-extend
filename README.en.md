@@ -9,6 +9,7 @@ LockInput is a lightweight macOS menu bar app that locks the current input metho
 ## Features
 
 - Locks the current input method and switches back if another source becomes active
+- Allows a temporary ABC/ASCII layout in macOS secure text entry fields such as password inputs
 - Runs in the menu bar without a Dock icon
 - Left-click opens the input source panel; right-click opens quick actions
 - Supports English, 简体中文, Français, Deutsch, and 日本語
@@ -36,6 +37,7 @@ The current release is not Apple-notarized. If macOS blocks the first launch, al
 - Right-click the menu bar lock icon to open the quick actions menu
 - Click an input method in the list to switch to it and lock it
 - Use the Lock / Unlock button to lock the current source or release the lock
+- In secure text entry fields such as password inputs, you can temporarily switch to ABC/ASCII; the locked source is restored after leaving secure entry
 - Change the interface language from the language menu at the bottom
 - Enable Launch at Login to start the app automatically after login on macOS 13.0+
 

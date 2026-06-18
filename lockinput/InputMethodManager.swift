@@ -75,24 +75,6 @@ class InputMethodManager: ObservableObject {
         return ""
     }
 
-    func getInputSourceType(_ source: TISInputSource) -> String {
-        if let typePtr = TISGetInputSourceProperty(source, kTISPropertyInputSourceType) {
-            return Unmanaged<CFString>.fromOpaque(typePtr).takeUnretainedValue() as String
-        }
-        return ""
-    }
-
-    func isASCIICapableInputSource(_ source: TISInputSource) -> Bool {
-        guard let capablePtr = TISGetInputSourceProperty(source, kTISPropertyInputSourceIsASCIICapable) else {
-            return false
-        }
-        return Unmanaged<CFBoolean>.fromOpaque(capablePtr).takeUnretainedValue() == kCFBooleanTrue
-    }
-
-    func isKeyboardLayout(_ source: TISInputSource) -> Bool {
-        getInputSourceType(source) == (kTISTypeKeyboardLayout as String)
-    }
-
     func getCurrentInputSource() -> TISInputSource? {
         return TISCopyCurrentKeyboardInputSource()?.takeRetainedValue()
     }
@@ -237,11 +219,6 @@ class InputMethodManager: ObservableObject {
         let currentID = getInputSourceID(currentSource)
         guard currentID != lockedInputSourceID else { return }
 
-        if shouldAllowCapsLockTemporaryInputSource(currentSource, whileLockedTo: lockedInputSourceID) {
-            refreshLockedInputSource()
-            return
-        }
-
         guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
 
         isEnforcingLockedSource = true
@@ -259,14 +236,6 @@ class InputMethodManager: ObservableObject {
             self.refreshLockedInputSource()
             self.isEnforcingLockedSource = false
         }
-    }
-
-    private func shouldAllowCapsLockTemporaryInputSource(_ source: TISInputSource, whileLockedTo lockedInputSourceID: String) -> Bool {
-        guard NSEvent.modifierFlags.contains(.capsLock) else { return false }
-        guard isKeyboardLayout(source), isASCIICapableInputSource(source) else { return false }
-        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return false }
-
-        return !isKeyboardLayout(lockedSource)
     }
 
     private func startEnforcementTimer() {

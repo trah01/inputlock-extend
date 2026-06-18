@@ -235,14 +235,51 @@ class InputMethodManager: ObservableObject {
         guard let lockedInputSourceID = lockState.lockedInputSourceID else { return }
         guard let currentSource = getCurrentInputSource() else { return }
         let currentID = getInputSourceID(currentSource)
-        guard currentID != lockedInputSourceID else { return }
 
-        if shouldAllowSecureTextTemporaryInputSource(currentSource, whileLockedTo: lockedInputSourceID) {
-            refreshLockedInputSource()
+        if shouldUseSecureTextInputSource(whileLockedTo: lockedInputSourceID),
+            let temporarySource = preferredTemporaryASCIISource() {
+            if currentID != getInputSourceID(temporarySource) {
+                selectInputSourceAfterDelay(temporarySource, lockedInputSourceID: lockedInputSourceID)
+            } else {
+                refreshLockedInputSource()
+            }
             return
         }
 
+        guard currentID != lockedInputSourceID else { return }
+
         guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
+        selectInputSourceAfterDelay(lockedSource, lockedInputSourceID: lockedInputSourceID)
+    }
+
+    private func shouldUseSecureTextInputSource(whileLockedTo lockedInputSourceID: String) -> Bool {
+        guard IsSecureEventInputEnabled() else { return false }
+        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return false }
+
+        return !isKeyboardLayout(lockedSource)
+    }
+
+    private func preferredTemporaryASCIISource() -> TISInputSource? {
+        let preferredInputSourceIDs = [
+            "com.apple.keylayout.ABC",
+            "com.apple.keylayout.US"
+        ]
+
+        for inputSourceID in preferredInputSourceIDs {
+            if let source = inputSource(withID: inputSourceID),
+               isKeyboardLayout(source),
+               isASCIICapableInputSource(source) {
+                return source
+            }
+        }
+
+        return availableInputSources.first {
+            isKeyboardLayout($0) && isASCIICapableInputSource($0)
+        }
+    }
+
+    private func selectInputSourceAfterDelay(_ source: TISInputSource, lockedInputSourceID: String) {
+        let sourceID = getInputSourceID(source)
 
         isEnforcingLockedSource = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
@@ -252,21 +289,13 @@ class InputMethodManager: ObservableObject {
                 return
             }
 
-            if !self.selectInputSource(lockedSource),
-               let refreshedSource = self.inputSource(withID: lockedInputSourceID) {
+            if !self.selectInputSource(source),
+               let refreshedSource = self.inputSource(withID: sourceID) {
                 _ = self.selectInputSource(refreshedSource)
             }
             self.refreshLockedInputSource()
             self.isEnforcingLockedSource = false
         }
-    }
-
-    private func shouldAllowSecureTextTemporaryInputSource(_ source: TISInputSource, whileLockedTo lockedInputSourceID: String) -> Bool {
-        guard IsSecureEventInputEnabled() else { return false }
-        guard isKeyboardLayout(source), isASCIICapableInputSource(source) else { return false }
-        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return false }
-
-        return !isKeyboardLayout(lockedSource)
     }
 
     private func startEnforcementTimer() {

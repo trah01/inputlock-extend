@@ -9,7 +9,7 @@ LockInput ist eine schlanke macOS-Menüleisten-App. Sie sperrt die aktuelle Eing
 ## Funktionen
 
 - Sperrt die aktuelle Eingabemethode und stellt sie wieder her, wenn eine andere Quelle aktiv wird
-- Erlaubt in macOS-Sicherheitseingabefeldern wie Passwortfeldern temporär ein ABC/ASCII-Layout
+- Verwendet in macOS-Sicherheitseingabefeldern wie Passwortfeldern automatisch temporär ein ABC/ASCII-Layout
 - Läuft in der Menüleiste, ohne Dock-Symbol
 - Linksklick öffnet die Eingabequellenliste; Rechtsklick öffnet Schnellaktionen
 - Unterstützt English, 简体中文, Français, Deutsch und 日本語
@@ -37,7 +37,7 @@ Die aktuelle Veröffentlichung ist nicht von Apple notarisiert. Wenn macOS den e
 - Rechtsklick auf das Schloss-Symbol: Schnellaktionsmenü öffnen
 - Klick auf eine Eingabemethode: zu dieser Methode wechseln und sie sperren
 - Schaltfläche Sperren / Entsperren: aktuelle Quelle sperren oder Sperre aufheben
-- In Sicherheitseingabefeldern wie Passwortfeldern können Sie temporär zu ABC/ASCII wechseln; nach dem Verlassen der Sicherheitseingabe wird die gesperrte Quelle wiederhergestellt
+- In Sicherheitseingabefeldern wie Passwortfeldern wechselt die App automatisch temporär zu ABC/ASCII; nach dem Verlassen der Sicherheitseingabe wird die gesperrte Quelle wiederhergestellt
 - Sprachmenü unten: Sprache der Oberfläche wechseln
 - Start bei der Anmeldung aktivieren: App unter macOS 13.0+ automatisch nach der Anmeldung starten
 

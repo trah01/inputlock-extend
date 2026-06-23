@@ -29,6 +29,7 @@ class InputMethodManager: ObservableObject {
     private var temporaryABCStartedAt: Date?
     private var isEnforcingLockedSource = false
     private var isTemporarilyUsingABC = false
+    private var temporaryABCSourceID: String?
 
     init() {
         loadAvailableInputSources()
@@ -157,6 +158,7 @@ class InputMethodManager: ObservableObject {
         temporaryABCTimer?.invalidate()
 
         let temporarySourceID = getInputSourceID(temporarySource)
+        temporaryABCSourceID = temporarySourceID
         if getCurrentInputSource().map(getInputSourceID) != temporarySourceID {
             _ = selectInputSource(temporarySource)
         }
@@ -203,6 +205,13 @@ class InputMethodManager: ObservableObject {
 
     private func handleInputSourceChange() {
         updateCurrentInputSourceName()
+
+        if isTemporarilyUsingABC,
+           let currentSource = getCurrentInputSource(),
+           getInputSourceID(currentSource) != temporaryABCSourceID {
+            stopTemporaryABCMode()
+        }
+
         enforceLockedInputSource()
     }
 
@@ -260,23 +269,13 @@ class InputMethodManager: ObservableObject {
         guard let currentSource = getCurrentInputSource() else { return }
         let currentID = getInputSourceID(currentSource)
 
-        if shouldUseSecureTextInputSource(whileLockedTo: lockedInputSourceID),
-            let temporarySource = preferredTemporaryASCIISource() {
-            if currentID != getInputSourceID(temporarySource) {
-                selectInputSourceAfterDelay(temporarySource, lockedInputSourceID: lockedInputSourceID)
-            } else {
-                refreshLockedInputSource()
-            }
-            return
-        }
-
         guard currentID != lockedInputSourceID else { return }
 
         guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
         selectInputSourceAfterDelay(lockedSource, lockedInputSourceID: lockedInputSourceID)
     }
 
-    private func shouldUseSecureTextInputSource(whileLockedTo lockedInputSourceID: String) -> Bool {
+    private func shouldUseSecureTextInputSourceFallback(whileLockedTo lockedInputSourceID: String) -> Bool {
         guard IsSecureEventInputEnabled() else { return false }
         guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return false }
 
@@ -313,10 +312,18 @@ class InputMethodManager: ObservableObject {
                 return
             }
 
-            if !self.selectInputSource(source),
+            var didSelect = self.selectInputSource(source)
+            if !didSelect,
                let refreshedSource = self.inputSource(withID: sourceID) {
-                _ = self.selectInputSource(refreshedSource)
+                didSelect = self.selectInputSource(refreshedSource)
             }
+
+            if !didSelect,
+               self.shouldUseSecureTextInputSourceFallback(whileLockedTo: lockedInputSourceID),
+               let temporarySource = self.preferredTemporaryASCIISource() {
+                _ = self.selectInputSource(temporarySource)
+            }
+
             self.refreshLockedInputSource()
             self.isEnforcingLockedSource = false
         }
@@ -379,5 +386,6 @@ class InputMethodManager: ObservableObject {
         temporaryABCTimer?.invalidate()
         temporaryABCTimer = nil
         temporaryABCStartedAt = nil
+        temporaryABCSourceID = nil
     }
 }

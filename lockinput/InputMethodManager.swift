@@ -267,19 +267,11 @@ class InputMethodManager: ObservableObject {
         guard !isTemporarilyUsingABC else { return }
         guard let lockedInputSourceID = lockState.lockedInputSourceID else { return }
         guard let currentSource = getCurrentInputSource() else { return }
+        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
         let currentID = getInputSourceID(currentSource)
 
         guard currentID != lockedInputSourceID else { return }
-
-        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
         selectInputSourceAfterDelay(lockedSource, lockedInputSourceID: lockedInputSourceID)
-    }
-
-    private func shouldUseSecureTextInputSourceFallback(whileLockedTo lockedInputSourceID: String) -> Bool {
-        guard IsSecureEventInputEnabled() else { return false }
-        guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return false }
-
-        return !isKeyboardLayout(lockedSource)
     }
 
     private func preferredTemporaryASCIISource() -> TISInputSource? {
@@ -312,16 +304,9 @@ class InputMethodManager: ObservableObject {
                 return
             }
 
-            var didSelect = self.selectInputSource(source)
-            if !didSelect,
+            if !self.selectInputSource(source),
                let refreshedSource = self.inputSource(withID: sourceID) {
-                didSelect = self.selectInputSource(refreshedSource)
-            }
-
-            if !didSelect,
-               self.shouldUseSecureTextInputSourceFallback(whileLockedTo: lockedInputSourceID),
-               let temporarySource = self.preferredTemporaryASCIISource() {
-                _ = self.selectInputSource(temporarySource)
+                _ = self.selectInputSource(refreshedSource)
             }
 
             self.refreshLockedInputSource()

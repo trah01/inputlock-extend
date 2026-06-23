@@ -27,7 +27,7 @@ LockInput est une application légère pour la barre de menus de macOS. Elle ver
 Installation recommandée depuis GitHub Releases :
 
 1. Ouvrez la page [Releases](https://github.com/trah01/inputlock-extend/releases).
-2. Téléchargez le dernier fichier `LockInput-1.0.dmg`.
+2. Téléchargez le dernier fichier `LockInput-1.1.dmg`.
 3. Ouvrez le DMG et faites glisser `lockinput.app` vers `Applications`.
 4. Lancez LockInput depuis `Applications`.
 
@@ -82,7 +82,7 @@ Créez le DMG :
 Le fichier généré est :
 
 ```text
-LockInput-1.0.dmg
+LockInput-1.1.dmg
 ```
 
 ## Structure du projet

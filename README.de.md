@@ -27,7 +27,7 @@ LockInput ist eine schlanke macOS-Menüleisten-App. Sie sperrt die aktuelle Eing
 Empfohlene Installation über GitHub Releases:
 
 1. Öffnen Sie die Seite [Releases](https://github.com/trah01/inputlock-extend/releases).
-2. Laden Sie die aktuelle Datei `LockInput-1.0.dmg` herunter.
+2. Laden Sie die aktuelle Datei `LockInput-1.1.dmg` herunter.
 3. Öffnen Sie die DMG-Datei und ziehen Sie `lockinput.app` in `Applications`.
 4. Starten Sie LockInput aus `Applications`.
 
@@ -82,7 +82,7 @@ DMG erstellen:
 Die erzeugte Datei ist:
 
 ```text
-LockInput-1.0.dmg
+LockInput-1.1.dmg
 ```
 
 ## Projektstruktur

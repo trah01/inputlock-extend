@@ -27,7 +27,7 @@ LockInput is a lightweight macOS menu bar app that locks the current input metho
 Install from GitHub Releases:
 
 1. Open the [Releases](https://github.com/trah01/inputlock-extend/releases) page.
-2. Download the latest `LockInput-1.0.dmg`.
+2. Download the latest `LockInput-1.1.dmg`.
 3. Open the DMG and drag `lockinput.app` to `Applications`.
 4. Launch LockInput from `Applications`.
 
@@ -45,14 +45,17 @@ The current release is not Apple-notarized. If macOS blocks the first launch, al
 - Enable Launch at Login to start the app automatically after login on macOS 13.0+
 - Enable Restore Last Lock After Restart to restore the previously locked input source when the app starts again
 
-## Unpushed Changes Summary
+## Differences From the Original Project
 
-- Simplified the menu bar panel to focus on lock state, current/locked inputs, input list, and settings entry
-- Added a dedicated settings window accessible through `Command + ,`, the context menu, and the main panel
-- Extended the temporary shortcut from fixed ABC switching to any enabled input source, with ABC/US as the automatic fallback
-- Added shortcut recording support for Globe, Caps Lock, Shift, and regular key combinations
-- Fixed menu bar lock icon sizing so lock state changes no longer shift the popover position
-- Updated About, installation, and source links to `trah01/inputlock-extend`
+This repository continues development from [bigccc/inputlock](https://github.com/bigccc/inputlock). Main differences include:
+
+- Added a dedicated settings window accessible from the menu bar panel, the context menu, or `Command + ,`.
+- Extended the temporary switch shortcut from fixed ABC/ASCII switching to any enabled input source, with ABC/US as the automatic fallback.
+- Added shortcut recording support for Globe, Caps Lock, Shift, and regular key combinations.
+- Added support for restoring the last locked input source after restart.
+- Simplified the menu bar panel to focus on lock state, current/locked inputs, the input list, and the settings entry.
+- Fixed menu bar lock icon sizing so lock state changes no longer shift the popover position.
+- Added app icon assets and updated About, installation, and source links to `trah01/inputlock-extend`.
 
 ## Run From Source
 
@@ -91,7 +94,7 @@ Create the DMG:
 The generated file is:
 
 ```text
-LockInput-1.0.dmg
+LockInput-1.1.dmg
 ```
 
 ## Project Structure

@@ -27,7 +27,7 @@ LockInput は、現在の入力方式を固定する軽量な macOS メニュー
 GitHub Releases からのインストールを推奨します。
 
 1. [Releases](https://github.com/trah01/inputlock-extend/releases) ページを開きます。
-2. 最新の `LockInput-1.0.dmg` をダウンロードします。
+2. 最新の `LockInput-1.1.dmg` をダウンロードします。
 3. DMG を開き、`lockinput.app` を `Applications` にドラッグします。
 4. `Applications` から LockInput を起動します。
 
@@ -82,7 +82,7 @@ DMG を作成します。
 生成されるファイル:
 
 ```text
-LockInput-1.0.dmg
+LockInput-1.1.dmg
 ```
 
 ## プロジェクト構成

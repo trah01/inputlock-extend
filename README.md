@@ -27,7 +27,7 @@ LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法
 推荐从 GitHub Release 安装：
 
 1. 打开 [Releases](https://github.com/trah01/inputlock-extend/releases) 页面。
-2. 下载最新的 `LockInput-1.0.dmg`。
+2. 下载最新的 `LockInput-1.1.dmg`。
 3. 打开 DMG，把 `lockinput.app` 拖到 `Applications` 文件夹。
 4. 从 `Applications` 启动 LockInput。
 
@@ -45,14 +45,17 @@ LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法
 - 打开“开机启动”后，应用会在登录时自动启动（macOS 13.0+）
 - 打开“重启后恢复上次锁定”后，应用重新启动时会恢复上一次锁定的输入法
 
-## 未推送变更摘要
+## 与原项目的差异
 
-- 精简状态栏主面板，只保留锁定状态、当前/锁定输入法、输入法列表和设置入口
-- 新增独立设置窗口，支持 `Command + ,`、右键菜单和主面板入口打开
-- 临时切换快捷键从固定 ABC 扩展为可选择任意已启用输入法，未指定时自动选择 ABC/US
-- 快捷键录制支持 Globe、Caps Lock、Shift 以及常规组合键
-- 固定菜单栏锁图标尺寸，避免锁定状态变化导致弹窗位置位移
-- 关于链接、安装链接和源码地址已更新为 `trah01/inputlock-extend`
+本仓库基于 [bigccc/inputlock](https://github.com/bigccc/inputlock) 继续维护，主要差异包括：
+
+- 新增独立设置窗口，可通过状态栏主面板、右键菜单或 `Command + ,` 打开。
+- 临时切换快捷键从固定 ABC/ASCII 扩展为可配置的任意已启用输入法，未指定时自动回退到 ABC/US。
+- 快捷键录制支持 Globe、Caps Lock、Shift 以及常规组合键。
+- 支持重启后恢复上次锁定的输入法。
+- 精简状态栏主面板，只保留锁定状态、当前/锁定输入法、输入法列表和设置入口。
+- 固定菜单栏锁图标尺寸，避免锁定状态变化导致弹窗位置位移。
+- 补充应用图标资源，并将关于链接、安装链接和源码地址更新为 `trah01/inputlock-extend`。
 
 ## 从源码运行
 
@@ -91,7 +94,7 @@ xcodebuild -project lockinput.xcodeproj \
 生成的文件为：
 
 ```text
-LockInput-1.0.dmg
+LockInput-1.1.dmg
 ```
 
 ## 项目结构

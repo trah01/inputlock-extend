@@ -1,10 +1,10 @@
-# LockInput
+# InputLock
 
 Default README: [简体中文](README.md)
 
 Other languages: English | [Français](README.fr.md) | [Deutsch](README.de.md) | [日本語](README.ja.md)
 
-LockInput is a lightweight macOS menu bar app that locks the current input method and helps prevent accidental input source switching while writing, coding, or moving between apps.
+InputLock is a lightweight macOS menu bar app that locks the current input method and helps prevent accidental input source switching while writing, coding, or moving between apps.
 
 ## Features
 
@@ -27,9 +27,9 @@ LockInput is a lightweight macOS menu bar app that locks the current input metho
 Install from GitHub Releases:
 
 1. Open the [Releases](https://github.com/trah01/inputlock-extend/releases) page.
-2. Download the latest `LockInput-1.1.dmg`.
+2. Download the latest `InputLock-1.2.dmg`.
 3. Open the DMG and drag `lockinput.app` to `Applications`.
-4. Launch LockInput from `Applications`.
+4. Launch InputLock from `Applications`.
 
 The current release is not Apple-notarized. If macOS blocks the first launch, allow it in System Settings > Privacy & Security, or Control-click the app and choose Open.
 
@@ -94,7 +94,7 @@ Create the DMG:
 The generated file is:
 
 ```text
-LockInput-1.1.dmg
+InputLock-1.2.dmg
 ```
 
 ## Project Structure

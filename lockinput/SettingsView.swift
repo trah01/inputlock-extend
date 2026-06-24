@@ -14,6 +14,7 @@ struct SettingsView: View {
     @AppStorage("launchAtLogin") var launchAtLogin = false
     @AppStorage("restorePreviousLockState") var restorePreviousLockState = false
     @AppStorage("temporaryInputSourceID") var temporaryInputSourceID = ""
+    @AppStorage("temporaryInputRestoreInterval") var temporaryInputRestoreInterval = 5.0
     @State private var isRecordingShortcut = false
     @State private var shortcutRecordingMonitors: [Any] = []
 
@@ -21,81 +22,86 @@ struct SettingsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 Text("settings.title".localized(with: languageManager))
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: 20, weight: .bold))
+                    .padding(.bottom, 2)
 
-                settingsSection {
-                    HStack {
-                        Label("settings.language".localized(with: languageManager), systemImage: "globe")
-                            .font(AppTypography.primary)
+                // General section
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("settings.section.general".localized(with: languageManager))
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 4)
 
-                        Spacer()
-
-                        Picker("", selection: $languageManager.currentLanguage) {
-                            ForEach(AppLanguage.allCases) { language in
-                                Text(language.displayName).tag(language)
+                    settingsSection {
+                        SettingsRow(iconName: "globe", iconColor: .blue, title: "settings.language".localized(with: languageManager)) {
+                            Picker("", selection: $languageManager.currentLanguage) {
+                                ForEach(AppLanguage.allCases) { language in
+                                    Text(language.displayName).tag(language)
+                                }
                             }
+                            .labelsHidden()
+                            .pickerStyle(.menu)
+                            .frame(width: 140)
                         }
-                        .labelsHidden()
-                        .pickerStyle(.menu)
-                        .frame(width: 150)
-                    }
 
-                    Divider()
+                        Divider()
 
-                    Toggle(isOn: $launchAtLogin) {
-                        Label("settings.launchAtLogin".localized(with: languageManager), systemImage: "power")
-                            .font(AppTypography.primary)
-                    }
-                    .toggleStyle(.checkbox)
-                    .onChange(of: launchAtLogin) { newValue in
-                        setLaunchAtLogin(newValue)
-                    }
+                        SettingsRow(iconName: "power", iconColor: .orange, title: "settings.launchAtLogin".localized(with: languageManager)) {
+                            Toggle("", isOn: $launchAtLogin)
+                                .toggleStyle(.switch)
+                                .labelsHidden()
+                                .onChange(of: launchAtLogin) { newValue in
+                                    setLaunchAtLogin(newValue)
+                                }
+                        }
 
-                    Divider()
+                        Divider()
 
-                    Toggle(isOn: $restorePreviousLockState) {
-                        Label("settings.restorePreviousLockState".localized(with: languageManager), systemImage: "arrow.clockwise")
-                            .font(AppTypography.primary)
+                        SettingsRow(iconName: "arrow.clockwise", iconColor: .green, title: "settings.restorePreviousLockState".localized(with: languageManager)) {
+                            Toggle("", isOn: $restorePreviousLockState)
+                                .toggleStyle(.switch)
+                                .labelsHidden()
+                        }
                     }
-                    .toggleStyle(.checkbox)
                 }
 
-                settingsSection {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Label("settings.temporaryInputShortcut".localized(with: languageManager), systemImage: "keyboard")
-                            .font(AppTypography.primary)
+                // Shortcut & Temporary Switch section
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("settings.section.shortcut".localized(with: languageManager))
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 4)
 
-                        HStack(spacing: 8) {
-                            Button(action: {
-                                startShortcutRecording()
-                            }) {
-                                Text(shortcutButtonTitle)
-                                    .font(AppTypography.control)
-                                    .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            .buttonStyle(.bordered)
+                    settingsSection {
+                        SettingsRow(iconName: "keyboard", iconColor: .purple, title: "settings.temporaryInputShortcut".localized(with: languageManager)) {
+                            HStack(spacing: 8) {
+                                Button(action: {
+                                    startShortcutRecording()
+                                }) {
+                                    Text(shortcutButtonTitle)
+                                        .font(AppTypography.control)
+                                        .lineLimit(1)
+                                        .frame(width: 110, alignment: .leading)
+                                }
+                                .buttonStyle(.bordered)
 
-                            Button(action: {
-                                shortcutManager.clearShortcut()
-                                stopShortcutRecording()
-                            }) {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 11, weight: .semibold))
-                                    .frame(width: 22, height: 22)
+                                Button(action: {
+                                    shortcutManager.clearShortcut()
+                                    stopShortcutRecording()
+                                }) {
+                                    Image(systemName: "xmark")
+                                        .font(.system(size: 10, weight: .semibold))
+                                        .frame(width: 20, height: 20)
+                                }
+                                .buttonStyle(.bordered)
+                                .disabled(shortcutManager.shortcut == nil && !isRecordingShortcut)
+                                .help("settings.clearShortcut".localized(with: languageManager))
                             }
-                            .buttonStyle(.bordered)
-                            .disabled(shortcutManager.shortcut == nil && !isRecordingShortcut)
-                            .help("settings.clearShortcut".localized(with: languageManager))
                         }
 
-                        HStack {
-                            Text("settings.temporaryInputSource".localized(with: languageManager))
-                                .font(AppTypography.control)
-                                .foregroundColor(.secondary)
+                        Divider()
 
-                            Spacer()
-
+                        SettingsRow(iconName: "arrow.right.circle", iconColor: .teal, title: "settings.temporaryInputSource".localized(with: languageManager)) {
                             Picker("", selection: $temporaryInputSourceID) {
                                 Text("settings.temporaryInputSourceAutomatic".localized(with: languageManager))
                                     .tag("")
@@ -107,29 +113,49 @@ struct SettingsView: View {
                             }
                             .labelsHidden()
                             .pickerStyle(.menu)
-                            .frame(width: 190)
+                            .frame(width: 170)
                         }
 
-                        Text("settings.temporaryInputHint".localized(with: languageManager))
-                            .font(AppTypography.secondary)
+                        Divider()
+
+                        SettingsRow(iconName: "timer", iconColor: .red, title: "settings.temporaryInputRestoreInterval".localized(with: languageManager)) {
+                            Stepper(value: $temporaryInputRestoreInterval, in: 1...60, step: 1) {
+                                Text(String(format: "settings.secondsFormat".localized(with: languageManager), Int(temporaryInputRestoreInterval)))
+                                    .font(AppTypography.control)
+                            }
+                        }
+
+                        Divider()
+
+                        Text(String(format: "settings.temporaryInputHint".localized(with: languageManager), Int(temporaryInputRestoreInterval)))
+                            .font(.system(size: 11))
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 4)
                     }
                 }
 
-                settingsSection {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Label("settings.about".localized(with: languageManager), systemImage: "info.circle")
-                            .font(AppTypography.primary)
+                // About section
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("settings.section.about".localized(with: languageManager))
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 4)
 
-                        Link("https://github.com/trah01/inputlock-extend", destination: URL(string: "https://github.com/trah01/inputlock-extend")!)
-                            .font(AppTypography.control)
+                    settingsSection {
+                        SettingsRow(iconName: "info.circle", iconColor: .gray, title: "settings.about".localized(with: languageManager)) {
+                            Link(destination: URL(string: "https://github.com/trah01/inputlock-extend")!) {
+                                Text("settings.projectLink".localized(with: languageManager))
+                                    .font(AppTypography.control)
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
                     }
                 }
             }
-            .padding(24)
+            .padding(20)
         }
-        .frame(width: 460, height: 520)
+        .frame(width: 460, height: 500)
         .onDisappear {
             stopShortcutRecording()
         }
@@ -145,13 +171,20 @@ struct SettingsView: View {
     }
 
     func settingsSection<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             content()
         }
-        .padding(14)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(NSColor.controlBackgroundColor))
-        .cornerRadius(8)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(NSColor.controlBackgroundColor).opacity(0.8))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.secondary.opacity(0.1), lineWidth: 0.5)
+        )
     }
 
     func setLaunchAtLogin(_ enabled: Bool) {
@@ -208,6 +241,44 @@ struct SettingsView: View {
         }
         shortcutRecordingMonitors.removeAll()
         isRecordingShortcut = false
+    }
+}
+
+struct SettingsRowIcon: View {
+    let name: String
+    let color: Color
+    
+    var body: some View {
+        Image(systemName: name)
+            .font(.system(size: 11, weight: .semibold))
+            .foregroundColor(.white)
+            .frame(width: 22, height: 22)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(color)
+            )
+    }
+}
+
+struct SettingsRow<Content: View>: View {
+    let iconName: String
+    let iconColor: Color
+    let title: String
+    @ViewBuilder let control: () -> Content
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            SettingsRowIcon(name: iconName, color: iconColor)
+            
+            Text(title)
+                .font(AppTypography.primary)
+                .foregroundColor(.primary)
+            
+            Spacer()
+            
+            control()
+        }
+        .padding(.vertical, 4)
     }
 }
 

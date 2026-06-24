@@ -1,10 +1,10 @@
-# LockInput
+# InputLock
 
 README par défaut : [简体中文](README.md)
 
 Autres langues : [English](README.en.md) | Français | [Deutsch](README.de.md) | [日本語](README.ja.md)
 
-LockInput est une application légère pour la barre de menus de macOS. Elle verrouille la méthode de saisie active afin de limiter les changements accidentels lors de la rédaction, du développement ou du passage d'une application à l'autre.
+InputLock est une application légère pour la barre de menus de macOS. Elle verrouille la méthode de saisie active afin de limiter les changements accidentels lors de la rédaction, du développement ou du passage d'une application à l'autre.
 
 ## Fonctionnalités
 
@@ -27,9 +27,9 @@ LockInput est une application légère pour la barre de menus de macOS. Elle ver
 Installation recommandée depuis GitHub Releases :
 
 1. Ouvrez la page [Releases](https://github.com/trah01/inputlock-extend/releases).
-2. Téléchargez le dernier fichier `LockInput-1.1.dmg`.
+2. Téléchargez le dernier fichier `InputLock-1.2.dmg`.
 3. Ouvrez le DMG et faites glisser `lockinput.app` vers `Applications`.
-4. Lancez LockInput depuis `Applications`.
+4. Lancez InputLock depuis `Applications`.
 
 La version actuelle n'est pas notariée par Apple. Si macOS bloque le premier lancement, autorisez l'application dans Réglages Système > Confidentialité et sécurité, ou cliquez sur l'application avec Control puis choisissez Ouvrir.
 
@@ -82,7 +82,7 @@ Créez le DMG :
 Le fichier généré est :
 
 ```text
-LockInput-1.1.dmg
+InputLock-1.2.dmg
 ```
 
 ## Structure du projet

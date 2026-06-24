@@ -8,6 +8,7 @@
 /* Buttons */
 "button.lock" = "Verrouiller";
 "button.unlock" = "Déverrouiller";
+"button.changeLock" = "Changer le verrou";
 "button.quit" = "Quitter";
 
 /* Menu */
@@ -26,7 +27,7 @@
 "settings.setShortcut" = "Définir le raccourci";
 "settings.recordingShortcut" = "Appuyez sur le raccourci";
 "settings.clearShortcut" = "Effacer le raccourci";
-"settings.temporaryInputHint" = "Passe temporairement à la saisie choisie. Appuyez encore pour restaurer, ou attendez 5 s d'inactivité.";
+"settings.temporaryInputHint" = "Passe temporairement à la saisie choisie. Appuyez encore pour restaurer, ou attendez %d s d'inactivité.";
 "settings.language" = "Langue";
 "settings.about" = "À propos";
 "settings.projectLink" = "Page du projet";
@@ -41,3 +42,12 @@
 
 /* Accessibility */
 "accessibility.lockIcon" = "État du verrouillage de saisie";
+
+/* Settings Sections */
+"settings.section.general" = "Général";
+"settings.section.shortcut" = "Raccourci et saisie temporaire";
+"settings.section.about" = "À propos";
+
+/* Restore interval */
+"settings.temporaryInputRestoreInterval" = "Délai de restauration";
+"settings.secondsFormat" = "%d secondes";

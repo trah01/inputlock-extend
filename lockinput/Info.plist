@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>LockInput</string>
+	<string>InputLock</string>
 	<key>CFBundleDisplayName</key>
 	<string>输入法锁定</string>
 	<key>LSUIElement</key>

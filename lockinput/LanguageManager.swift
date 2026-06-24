@@ -66,7 +66,8 @@ class LanguageManager: ObservableObject {
         let languageCode: String
 
         if currentLanguage == .system {
-            languageCode = Locale.preferredLanguages.first ?? "en"
+            let supported = AppLanguage.allCases.filter { $0 != .system }.map { $0.rawValue }
+            languageCode = Bundle.preferredLocalizations(from: supported).first ?? "en"
         } else {
             languageCode = currentLanguage.rawValue
         }

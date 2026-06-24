@@ -32,17 +32,34 @@ struct ContentView: View {
             Divider()
 
             settingsEntry
+
+            Divider()
+
+            quitEntry
         }
         .frame(width: 260)
     }
 
     var headerView: some View {
-        VStack(spacing: 7) {
-            HStack {
-                Image(systemName: headerIconName)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(headerIconColor)
-                    .frame(width: 22)
+        VStack(spacing: 8) {
+            HStack(spacing: 10) {
+                // Lock Status Circle
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: statusCircleColors,
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .frame(width: 28, height: 28)
+                        .shadow(color: statusCircleShadowColor, radius: 3, x: 0, y: 1)
+
+                    Image(systemName: statusCircleIconName)
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(statusCircleIconColor)
+                }
 
                 Text(statusTitle)
                     .font(AppTypography.status)
@@ -51,17 +68,33 @@ struct ContentView: View {
                 Spacer()
 
                 Button(action: {
-                    inputManager.toggle()
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        if isCurrentSourceDifferentFromLocked {
+                            inputManager.lockCurrentInputSource()
+                        } else {
+                            inputManager.toggle()
+                        }
+                    }
                 }) {
-                    Text(inputManager.isLocked
-                         ? "button.unlock".localized(with: languageManager)
-                         : "button.lock".localized(with: languageManager))
-                        .font(AppTypography.control)
-                        .lineLimit(1)
-                        .frame(width: 54)
+                    HStack(spacing: 4) {
+                        Image(systemName: isCurrentSourceDifferentFromLocked ? "lock.fill" : (inputManager.isLocked ? "lock.open.fill" : "lock.fill"))
+                            .font(.system(size: 9, weight: .bold))
+                        Text(isCurrentSourceDifferentFromLocked
+                             ? "button.changeLock".localized(with: languageManager)
+                             : (inputManager.isLocked
+                                 ? "button.unlock".localized(with: languageManager)
+                                 : "button.lock".localized(with: languageManager)))
+                            .font(.system(size: 11, weight: .semibold))
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(
+                        Capsule()
+                            .fill((inputManager.isLocked && !isCurrentSourceDifferentFromLocked) ? Color.secondary.opacity(0.15) : Color.accentColor)
+                    )
+                    .foregroundColor((inputManager.isLocked && !isCurrentSourceDifferentFromLocked) ? .primary : .white)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(inputManager.isLocked ? .gray : .accentColor)
+                .buttonStyle(.plain)
             }
 
             VStack(spacing: 4) {
@@ -88,7 +121,7 @@ struct ContentView: View {
                         isSelected: isCurrentSource(source),
                         isLocked: isLockedSource(source)
                     ) {
-                        inputManager.lockInputSource(source)
+                        inputManager.selectOrTemporarilySwitchToInputSource(source)
                     }
                 }
             }
@@ -117,8 +150,27 @@ struct ContentView: View {
         .buttonStyle(.plain)
     }
 
+    var quitEntry: some View {
+        Button(action: {
+            NSApp.terminate(nil)
+        }) {
+            HStack {
+                Label("button.quit".localized(with: languageManager), systemImage: "power")
+                    .font(AppTypography.control)
+                    .foregroundColor(.red)
+                    .lineLimit(1)
+
+                Spacer()
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
     var statusTitle: String {
-        if inputManager.isTemporarilyUsingABC {
+        if inputManager.isTemporarilyActive {
             return "status.temporaryABC".localized(with: languageManager)
         }
 
@@ -127,20 +179,34 @@ struct ContentView: View {
             : "status.unlocked".localized(with: languageManager)
     }
 
-    var headerIconName: String {
-        if inputManager.isTemporarilyUsingABC {
-            return "keyboard"
+    var statusCircleColors: [Color] {
+        if inputManager.isTemporarilyActive {
+            return [.blue, .blue.opacity(0.85)]
         }
-
-        return inputManager.isLocked ? "lock.fill" : "lock.open"
+        return inputManager.isLocked
+            ? [.orange, .orange.opacity(0.85)]
+            : [Color.secondary.opacity(0.18), Color.secondary.opacity(0.12)]
     }
 
-    var headerIconColor: Color {
-        if inputManager.isTemporarilyUsingABC {
-            return .accentColor
+    var statusCircleIconName: String {
+        if inputManager.isTemporarilyActive {
+            return "keyboard"
         }
+        return inputManager.isLocked ? "lock.fill" : "lock.open.fill"
+    }
 
-        return inputManager.isLocked ? .accentColor : .secondary
+    var statusCircleIconColor: Color {
+        if inputManager.isTemporarilyActive || inputManager.isLocked {
+            return .white
+        }
+        return .secondary
+    }
+
+    var statusCircleShadowColor: Color {
+        if inputManager.isTemporarilyActive {
+            return .blue.opacity(0.2)
+        }
+        return inputManager.isLocked ? .orange.opacity(0.2) : .clear
     }
 
     var lockedInputSourceName: String {
@@ -153,6 +219,12 @@ struct ContentView: View {
         }
 
         return inputManager.getInputSourceName(source)
+    }
+
+    var isCurrentSourceDifferentFromLocked: Bool {
+        guard inputManager.isLocked else { return false }
+        guard let current = inputManager.getCurrentInputSource() else { return false }
+        return inputManager.getInputSourceID(current) != inputManager.lockedInputSourceID
     }
 
     func sourceSummaryRow(label: String, value: String) -> some View {
@@ -194,7 +266,7 @@ struct InputSourceRow: View {
         Button(action: action) {
             HStack {
                 Image(systemName: isLocked ? "lock.fill" : "keyboard")
-                    .foregroundColor(isLocked ? .accentColor : .secondary)
+                    .foregroundColor(isLocked ? .orange : .secondary)
                     .frame(width: 20)
 
                 Text(inputManager.getInputSourceName(source))
@@ -213,6 +285,7 @@ struct InputSourceRow: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 5)
             .background(isSelected ? Color.accentColor.opacity(0.12) : Color.clear)
+            .contentShape(Rectangle())
             .cornerRadius(6)
         }
         .buttonStyle(.plain)

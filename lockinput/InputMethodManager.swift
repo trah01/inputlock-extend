@@ -15,10 +15,15 @@ class InputMethodManager: ObservableObject {
         static let restorePreviousLockState = "restorePreviousLockState"
         static let previousLockedInputSourceID = "previousLockedInputSourceID"
         static let temporaryInputSourceID = "temporaryInputSourceID"
+        static let temporaryInputRestoreInterval = "temporaryInputRestoreInterval"
     }
     private enum TemporaryInput {
-        static let idleRestoreInterval: TimeInterval = 5.0
         static let retryInterval: TimeInterval = 0.5
+    }
+
+    var idleRestoreInterval: TimeInterval {
+        let val = UserDefaults.standard.double(forKey: DefaultsKey.temporaryInputRestoreInterval)
+        return val > 0 ? val : 5.0
     }
 
     @Published var isLocked = false
@@ -32,7 +37,7 @@ class InputMethodManager: ObservableObject {
     private var enforcementTimer: Timer?
     private var temporaryInputTimer: Timer?
     private var isEnforcingLockedSource = false
-    @Published private(set) var isTemporarilyUsingABC = false
+    @Published private(set) var isTemporarilyActive = false
     private var temporaryInputSourceID: String?
 
     init() {
@@ -152,7 +157,7 @@ class InputMethodManager: ObservableObject {
     }
 
     func switchTemporarilyToSelectedInputSource() {
-        if isTemporarilyUsingABC {
+        if isTemporarilyActive {
             stopTemporaryInputMode()
             enforceLockedInputSource()
             return
@@ -163,7 +168,7 @@ class InputMethodManager: ObservableObject {
             return
         }
 
-        isTemporarilyUsingABC = true
+        isTemporarilyActive = true
         temporaryInputTimer?.invalidate()
 
         let temporarySourceID = getInputSourceID(temporarySource)
@@ -172,7 +177,25 @@ class InputMethodManager: ObservableObject {
             _ = selectInputSource(temporarySource)
         }
 
-        scheduleTemporaryInputRestoreCheck(after: TemporaryInput.idleRestoreInterval)
+        scheduleTemporaryInputRestoreCheck(after: idleRestoreInterval)
+    }
+
+    func selectOrTemporarilySwitchToInputSource(_ source: TISInputSource) {
+        let sourceID = getInputSourceID(source)
+        
+        if isLocked {
+            isTemporarilyActive = true
+            temporaryInputTimer?.invalidate()
+            temporaryInputSourceID = sourceID
+            
+            if getCurrentInputSource().map(getInputSourceID) != sourceID {
+                _ = selectInputSource(source)
+            }
+            
+            scheduleTemporaryInputRestoreCheck(after: idleRestoreInterval)
+        } else {
+            _ = selectInputSource(source)
+        }
     }
 
     private func setupInputSourceChangeObservers() {
@@ -215,7 +238,7 @@ class InputMethodManager: ObservableObject {
     private func handleInputSourceChange() {
         updateCurrentInputSourceName()
 
-        if isTemporarilyUsingABC,
+        if isTemporarilyActive,
            let currentSource = getCurrentInputSource(),
            getInputSourceID(currentSource) != temporaryInputSourceID {
             stopTemporaryInputMode()
@@ -273,7 +296,7 @@ class InputMethodManager: ObservableObject {
 
     private func enforceLockedInputSource() {
         guard lockState.isLocked, !isEnforcingLockedSource else { return }
-        guard !isTemporarilyUsingABC else { return }
+        guard !isTemporarilyActive else { return }
         guard let lockedInputSourceID = lockState.lockedInputSourceID else { return }
         guard let currentSource = getCurrentInputSource() else { return }
         guard let lockedSource = inputSource(withID: lockedInputSourceID) else { return }
@@ -356,7 +379,7 @@ class InputMethodManager: ObservableObject {
     }
 
     private func restoreLockedInputSourceWhenIdle() {
-        guard isTemporarilyUsingABC else { return }
+        guard isTemporarilyActive else { return }
 
         if isUserCurrentlyTyping {
             scheduleTemporaryInputRestoreCheck(after: TemporaryInput.retryInterval)
@@ -375,11 +398,11 @@ class InputMethodManager: ObservableObject {
 
         guard secondsSinceLastKeyDown >= 0 else { return true }
 
-        return secondsSinceLastKeyDown < TemporaryInput.idleRestoreInterval
+        return secondsSinceLastKeyDown < idleRestoreInterval
     }
 
     private func stopTemporaryInputMode() {
-        isTemporarilyUsingABC = false
+        isTemporarilyActive = false
         temporaryInputTimer?.invalidate()
         temporaryInputTimer = nil
         temporaryInputSourceID = nil

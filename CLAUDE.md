@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定输入法防止意外切换。纯 Swift/SwiftUI 项目，无第三方依赖。
+InputLock 是一个轻量级 macOS 菜单栏应用，用于锁定输入法防止意外切换。纯 Swift/SwiftUI 项目，无第三方依赖。
 
 - 平台：macOS 26.0+
 - Bundle ID：com.cloudwings.lockinput

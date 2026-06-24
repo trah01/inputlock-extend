@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# LockInput DMG 打包脚本
+# InputLock DMG 打包脚本
 # 用法: ./scripts/create-dmg.sh
 
 set -e
 
-APP_NAME="LockInput"
-DMG_NAME="LockInput"
-VERSION="1.1"
+APP_NAME="InputLock"
+DMG_NAME="InputLock"
+VERSION="1.2"
 BUILD_DIR="build/Build/Products/Release"
 APP_PATH="$BUILD_DIR/lockinput.app"
 DMG_PATH="$DMG_NAME-$VERSION.dmg"

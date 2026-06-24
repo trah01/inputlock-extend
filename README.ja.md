@@ -1,10 +1,10 @@
-# LockInput
+# InputLock
 
 既定の README: [简体中文](README.md)
 
 他の言語: [English](README.en.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | 日本語
 
-LockInput は、現在の入力方式を固定する軽量な macOS メニューバーアプリです。文章作成、開発作業、アプリ間の移動中に入力方式が誤って切り替わることを減らします。
+InputLock は、現在の入力方式を固定する軽量な macOS メニューバーアプリです。文章作成、開発作業、アプリ間の移動中に入力方式が誤って切り替わることを減らします。
 
 ## 機能
 
@@ -27,9 +27,9 @@ LockInput は、現在の入力方式を固定する軽量な macOS メニュー
 GitHub Releases からのインストールを推奨します。
 
 1. [Releases](https://github.com/trah01/inputlock-extend/releases) ページを開きます。
-2. 最新の `LockInput-1.1.dmg` をダウンロードします。
+2. 最新の `InputLock-1.2.dmg` をダウンロードします。
 3. DMG を開き、`lockinput.app` を `Applications` にドラッグします。
-4. `Applications` から LockInput を起動します。
+4. `Applications` から InputLock を起動します。
 
 現在のリリースは Apple の公証を受けていません。初回起動時に macOS によりブロックされた場合は、システム設定 > プライバシーとセキュリティで許可するか、Control キーを押しながらアプリをクリックして「開く」を選択してください。
 
@@ -82,7 +82,7 @@ DMG を作成します。
 生成されるファイル:
 
 ```text
-LockInput-1.1.dmg
+InputLock-1.2.dmg
 ```
 
 ## プロジェクト構成

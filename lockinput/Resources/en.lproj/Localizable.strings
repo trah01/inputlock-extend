@@ -8,6 +8,7 @@
 /* Buttons */
 "button.lock" = "Lock";
 "button.unlock" = "Unlock";
+"button.changeLock" = "Change Lock";
 "button.quit" = "Quit";
 
 /* Menu */
@@ -26,7 +27,7 @@
 "settings.setShortcut" = "Set Shortcut";
 "settings.recordingShortcut" = "Press Shortcut";
 "settings.clearShortcut" = "Clear Shortcut";
-"settings.temporaryInputHint" = "Temporarily switches to the selected input. Press again to restore now, or stay idle for 5 seconds.";
+"settings.temporaryInputHint" = "Temporarily switches to the selected input. Press again to restore now. If no keypress is detected within %d seconds, it automatically reverts to the locked input method.";
 "settings.language" = "Language";
 "settings.about" = "About";
 "settings.projectLink" = "Project Homepage";
@@ -41,3 +42,12 @@
 
 /* Accessibility */
 "accessibility.lockIcon" = "Input Lock Status";
+
+/* Settings Sections */
+"settings.section.general" = "General";
+"settings.section.shortcut" = "Shortcut & Temporary Switch";
+"settings.section.about" = "About";
+
+/* Restore interval */
+"settings.temporaryInputRestoreInterval" = "Restore Delay";
+"settings.secondsFormat" = "%d seconds";

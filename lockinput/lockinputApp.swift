@@ -19,7 +19,7 @@ struct lockinputApp: App {
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var statusItem: NSStatusItem!
     var popover: NSPopover!
     var inputManager = InputMethodManager.shared
@@ -159,12 +159,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             window.contentView = hostingView
             window.isReleasedWhenClosed = false
             window.center()
+            window.delegate = self
             settingsWindow = window
         }
 
+        NSApp.setActivationPolicy(.regular)
         settingsWindow?.title = "settings.title".localized(with: languageManager)
         settingsWindow?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        if let window = notification.object as? NSWindow, window == settingsWindow {
+            NSApp.setActivationPolicy(.accessory)
+        }
     }
 
     @objc func quit() {

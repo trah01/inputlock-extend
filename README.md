@@ -1,10 +1,10 @@
-# LockInput
+# InputLock
 
 默认语言：简体中文
 
 其他语言： [English](README.en.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | [日本語](README.ja.md)
 
-LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法，减少在写作、编程或跨应用切换时误触切换输入法的问题。
+InputLock 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法，减少在写作、编程或跨应用切换时误触切换输入法的问题。
 
 ## 功能
 
@@ -27,9 +27,9 @@ LockInput 是一个轻量级 macOS 菜单栏应用，用于锁定当前输入法
 推荐从 GitHub Release 安装：
 
 1. 打开 [Releases](https://github.com/trah01/inputlock-extend/releases) 页面。
-2. 下载最新的 `LockInput-1.1.dmg`。
+2. 下载最新的 `InputLock-1.2.dmg`。
 3. 打开 DMG，把 `lockinput.app` 拖到 `Applications` 文件夹。
-4. 从 `Applications` 启动 LockInput。
+4. 从 `Applications` 启动 InputLock。
 
 当前发布包未经过 Apple 公证。如果 macOS 首次启动时提示无法打开，请在“系统设置 > 隐私与安全性”中允许打开，或按住 Control 点击应用后选择“打开”。
 
@@ -94,7 +94,7 @@ xcodebuild -project lockinput.xcodeproj \
 生成的文件为：
 
 ```text
-LockInput-1.1.dmg
+InputLock-1.2.dmg
 ```
 
 ## 项目结构

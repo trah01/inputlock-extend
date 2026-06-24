@@ -8,6 +8,7 @@
 /* Buttons */
 "button.lock" = "ロック";
 "button.unlock" = "解除";
+"button.changeLock" = "ロック切り替え";
 "button.quit" = "終了";
 
 /* Menu */
@@ -26,7 +27,7 @@
 "settings.setShortcut" = "ショートカットを設定";
 "settings.recordingShortcut" = "ショートカットを押す";
 "settings.clearShortcut" = "ショートカットを消去";
-"settings.temporaryInputHint" = "選択した入力に一時的に切り替えます。もう一度押すと戻り、5 秒の空き時間にも戻ります。";
+"settings.temporaryInputHint" = "選択した入力に一時的に切り替えます。もう一度押すと戻り、%d 秒の空き時間にも戻ります。";
 "settings.language" = "言語";
 "settings.about" = "情報";
 "settings.projectLink" = "プロジェクトページ";
@@ -41,3 +42,12 @@
 
 /* Accessibility */
 "accessibility.lockIcon" = "入力ロック状態";
+
+/* Settings Sections */
+"settings.section.general" = "一般";
+"settings.section.shortcut" = "ショートカットと一時切り替え";
+"settings.section.about" = "情報";
+
+/* Restore interval */
+"settings.temporaryInputRestoreInterval" = "復元までの遅延時間";
+"settings.secondsFormat" = "%d 秒";

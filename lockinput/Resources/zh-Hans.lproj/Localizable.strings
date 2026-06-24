@@ -8,6 +8,7 @@
 /* Buttons */
 "button.lock" = "锁定";
 "button.unlock" = "解锁";
+"button.changeLock" = "切换锁定";
 "button.quit" = "退出";
 
 /* Menu */
@@ -26,7 +27,7 @@
 "settings.setShortcut" = "设置快捷键";
 "settings.recordingShortcut" = "按下组合键";
 "settings.clearShortcut" = "清除快捷键";
-"settings.temporaryInputHint" = "触发后临时切到指定输入法；再按一次立即恢复，空闲 5 秒后也会自动恢复。";
+"settings.temporaryInputHint" = "触发后临时切换到指定输入法，再按一次可立即恢复。如果 %d 秒内未检测到按键输入，将自动切换回锁定的输入法。";
 "settings.language" = "语言";
 "settings.about" = "关于";
 "settings.projectLink" = "项目主页";
@@ -41,3 +42,12 @@
 
 /* Accessibility */
 "accessibility.lockIcon" = "输入法锁定状态";
+
+/* Settings Sections */
+"settings.section.general" = "常规";
+"settings.section.shortcut" = "快捷键与临时切换";
+"settings.section.about" = "关于";
+
+/* Restore interval */
+"settings.temporaryInputRestoreInterval" = "恢复等待时间";
+"settings.secondsFormat" = "%d 秒";

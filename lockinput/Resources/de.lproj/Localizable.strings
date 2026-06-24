@@ -8,6 +8,7 @@
 /* Buttons */
 "button.lock" = "Sperren";
 "button.unlock" = "Entsperren";
+"button.changeLock" = "Sperre ändern";
 "button.quit" = "Beenden";
 
 /* Menu */
@@ -26,7 +27,7 @@
 "settings.setShortcut" = "Kurzbefehl festlegen";
 "settings.recordingShortcut" = "Kurzbefehl drücken";
 "settings.clearShortcut" = "Kurzbefehl löschen";
-"settings.temporaryInputHint" = "Wechselt temporär zur gewählten Eingabe. Erneut drücken zum Wiederherstellen oder 5 s Leerlauf warten.";
+"settings.temporaryInputHint" = "Wechselt temporär zur gewählten Eingabe. Erneut drücken zum Wiederherstellen oder %d s Leerlauf warten.";
 "settings.language" = "Sprache";
 "settings.about" = "Über";
 "settings.projectLink" = "Projektseite";
@@ -41,3 +42,12 @@
 
 /* Accessibility */
 "accessibility.lockIcon" = "Eingabesperre-Status";
+
+/* Settings Sections */
+"settings.section.general" = "Allgemein";
+"settings.section.shortcut" = "Kurzbefehl & Temporärer Wechsel";
+"settings.section.about" = "Über";
+
+/* Restore interval */
+"settings.temporaryInputRestoreInterval" = "Wiederherstellung-Dauer";
+"settings.secondsFormat" = "%d Sekunden";
